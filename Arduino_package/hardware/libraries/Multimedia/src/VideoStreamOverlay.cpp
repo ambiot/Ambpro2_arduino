@@ -101,3 +101,8 @@ void VideoStreamOverlay::update(int ch, int idx)
 {
     canvas_update(ch, idx, 1);
 }
+
+void VideoStreamOverlay::update(int ch, int ready_to_update, int idx)
+{
+    canvas_update(ch, idx, ready_to_update);
+}

@@ -36,6 +36,18 @@ extern void mbfacenet_input_setup(void *last_res, int i, nn_data_param_t *input_
 extern int classification_preprocess(void *data_in, nn_data_param_t *data_param, void *tensor_in, nn_tensor_param_t *tensor_param);
 extern int classification_postprocess(void *tensor_out, nn_tensor_param_t *param, void *res);
 
+extern void palm_detection_set_network_init_info(void *m);
+extern int palm_detection_preprocess(void *data_in, nn_data_param_t *data_param, void *tensor_in, nn_tensor_param_t *tensor_param);
+extern int palm_detection_postprocess(void *tensor_out, nn_tensor_param_t *param, void *res);
+extern void palm_detection_set_confidence_thresh(void *confidence_thresh);
+extern void palm_detection_set_nms_thresh(void *nms_thresh);
+
+extern int hand_landmark_preprocess(void *data_in, nn_data_param_t *data_param, void *tensor_in, nn_tensor_param_t *tensor_param);
+extern int hand_landmark_postprocess(void *tensor_out, nn_tensor_param_t *param, void *res);
+extern void hand_landmark_set_confidence_thresh(void *confidence_thresh);
+extern void hand_landmark_set_nms_thresh(void *nms_thresh);
+extern void hand_landmark_input_setup(void *last_res, int i, nn_data_param_t *input_param);
+
 #ifdef __cplusplus
 }
 #endif
@@ -80,6 +92,18 @@ static void *classification_get_SD_filename(void)
 {
     /* set filename of customized model */
     return (void *)"sd:/NN_MDL/imgclassification.nb";
+}
+
+static void *palmdet_get_SD_filename(void)
+{
+    /* set filename of customized model */
+    return (void *)"sd:/NN_MDL/palm_detection.nb";
+}
+
+static void *handlandmark_get_SD_filename(void)
+{
+    /* set filename of customized model */
+    return (void *)"sd:/NN_MDL/hand_landmark.nb";
 }
 
 nnmodel_t yolov3_tiny_from_sd = {
@@ -150,5 +174,26 @@ nnmodel_t img_classification_from_sd = {
     .postprocess = classification_postprocess,
     .model_src = MODEL_SRC_FILE,
 
-    .name = "IMGCLASSIFICATION_SD",
-};
+    .name = "IMGCLASSIFICATION_SD"};
+
+nnmodel_t palmdet_from_sd = {
+    .nb = palmdet_get_SD_filename,
+    .preprocess = palm_detection_preprocess,
+    .postprocess = palm_detection_postprocess,
+    .model_src = MODEL_SRC_FILE,
+    .set_init_info = palm_detection_set_network_init_info,
+    .set_confidence_thresh = palm_detection_set_confidence_thresh,
+    .set_nms_thresh = palm_detection_set_nms_thresh,
+
+    .name = "PALM_DETECTION_SD"};
+
+nnmodel_t handlandmark_from_sd = {
+    .nb = handlandmark_get_SD_filename,
+    .preprocess = hand_landmark_preprocess,
+    .postprocess = hand_landmark_postprocess,
+    .model_src = MODEL_SRC_FILE,
+    .set_confidence_thresh = hand_landmark_set_confidence_thresh,
+    .set_nms_thresh = hand_landmark_set_nms_thresh,
+    .cas_in_setup = hand_landmark_input_setup,
+
+    .name = "HAND_LANDMARK_SD"};

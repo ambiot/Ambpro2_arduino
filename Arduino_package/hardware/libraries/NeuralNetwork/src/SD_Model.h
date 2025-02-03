@@ -8,5 +8,7 @@ extern nnmodel_t scrfd_fwfs_from_sd;
 extern nnmodel_t mbfacenet_fwfs_from_sd;
 extern nnmodel_t yamnet_from_sd;
 extern nnmodel_t img_classification_from_sd;
+extern nnmodel_t palmdet_from_sd;
+extern nnmodel_t handlandmark_from_sd;
 
 #endif
